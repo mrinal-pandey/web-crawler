@@ -9,7 +9,7 @@ FILE *log_file;
 
 // log_flag is used to ensure the succesful creation of logfile before attempting to 
 // log info or clean up the logger
-int log_flag = 0;
+int log_flag = -1;
 
 // Initialize the logger
 int init_logger()
@@ -35,6 +35,7 @@ int init_logger()
    			fprintf(log_file, "%s[%s]: %s", ctime(&now), INFO_TAG, "Logging into ");
 			fprintf(log_file, "%s", home_path);
 			fprintf(log_file, "%s", "...\n");
+			log_flag = 0;
 			return 0;
 		}
 		else
@@ -56,6 +57,10 @@ void logger(char* tag, char* message)
 	if(log_flag == 0)
 	{
    		fprintf(log_file, "[%s]: %s\n", tag, message);
+	}
+	else if(log_flag == -1)
+	{
+		printf("[WARN] Please initialize the log file using init_log()\n\n");
 	}
 }
 
